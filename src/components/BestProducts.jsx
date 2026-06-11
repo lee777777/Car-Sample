@@ -1,26 +1,30 @@
 import { Link } from 'react-router-dom';
 import ProductCard from './ProductCard';
+import graphineImage from '../assets/graphine.png'
+import detailerImage from '../assets/detailer.png'
+import microfiberImage from '../assets/microfiber.png'
+
 
 const featuredProducts = [
   {
     id: 1,
     name: 'Artdeshine Nano Graphene Coating',
     price: '45.000 OMR',
-    image: '/src/assets/graphine.png',
+    image: graphineImage,
     category: 'Coatings'
   },
   {
     id: 2,
     name: 'Artdeshine Graphene Detailer',
     price: '12.500 OMR',
-    image: '/src/assets/detailer.png',
+    image: detailerImage,
     category: 'Maintenance'
   },
   {
     id: 3,
     name: 'Premium Microfiber Pack',
     price: '8.000 OMR',
-    image: '/src/assets/microfiber.png',
+    image: microfiberImage,
     category: 'Accessories'
   }
 ];

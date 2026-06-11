@@ -1,4 +1,5 @@
 
+import heroImage from '../assets/Hero.jpg'
 import { Link } from 'react-router-dom';
 function Hero() {
   return ( <div className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-brand-black">
@@ -8,7 +9,7 @@ function Hero() {
         {/* Hero Image Placeholder */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/src/assets/Hero.jpg" 
+            src={heroImage}
             alt="Car detailing" 
             className="w-full h-full object-cover opacity-40"
        

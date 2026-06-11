@@ -1,5 +1,5 @@
 
-
+import mapImage from '../assets/world-physical-map.jpg'
 function MapView() {
   return (
      <div className="space-y-12">
@@ -15,7 +15,7 @@ function MapView() {
         {/* Placeholder for Mapbox integration */}
         <div className="absolute inset-0 opacity-40">
            <img 
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=2000" 
+            src={mapImage} 
             alt="Map background" 
             className="w-full h-full object-cover grayscale invert"
           />

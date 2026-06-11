@@ -1,31 +1,43 @@
+import productDisImage from '../assets/icons/delivery.png'
+import productDisHoverImage from '../assets/icons/courier-hover.png'
+import certifiedImage from '../assets/icons/high-quality.png'
+import certifiedHoverImage from '../assets/icons/high-quality-hover.png'
+import b2bImage from '../assets/icons/b2b.png'
+import b2bHoverImage from '../assets/icons/b2b-hover.png'
+import trainingImage from '../assets/icons/training.png'
+import tainingHoverImage from '../assets/icons/training-hover.png'
+
+
+
+
 const services = [
   {
     title: "Product Distribution",
     description:
       "Exclusive access to Artdeshine graphene coatings and premium detailing supplies for shops and retailers.",
-    iconWhite: "src/assets/icons/delivery.png",
-    iconOrange: "src/assets/icons/courier-hover.png",
+    iconWhite: productDisImage,
+    iconOrange: productDisHoverImage,
   },
   {
     title: "Certified Detailing",
     description:
       "Professional paint correction, ceramic coatings, and interior restoration at our approved service centers.",
-    iconWhite: "src/assets/icons/high-quality.png",
-    iconOrange: "src/assets/icons/high-quality-hover.png",
+    iconWhite: certifiedImage,
+    iconOrange: certifiedHoverImage,
   },
   {
     title: "B2B Partnership",
     description:
       "Empower your car care business by becoming an authorized dealer and service host.",
-    iconWhite: "src/assets/icons/b2b.png",
-    iconOrange: "src/assets/icons/b2b-hover.png",
+    iconWhite: b2bImage,
+    iconOrange: b2bHoverImage,
   },
   {
     title: "Training & Support",
     description:
       "Comprehensive technical training for detailing professionals on advanced coating applications.",
-    iconWhite: "src/assets/icons/training.png",
-    iconOrange: "src/assets/icons/training-hover.png",
+    iconWhite: trainingImage,
+    iconOrange: tainingHoverImage,
   },
 ];
 
