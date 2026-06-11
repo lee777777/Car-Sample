@@ -1,4 +1,4 @@
-
+import aboutImage from '../assets/car-daitaling.jpg'
 
 function AboutUs() {
   return (<>
@@ -28,7 +28,7 @@ function AboutUs() {
       <div className="relative">
         <div className="aspect-square rounded-2xl overflow-hidden border-2 border-brand-primary/30">
           <img 
-            src="/src/assets/car-daitaling.jpg" 
+            src={aboutImage} 
             alt="Detailing work" 
             className="w-full h-full object-cover"
           
