@@ -1,10 +1,13 @@
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
+import graphineImage from '../assets/graphine.png'
+import detailerImage from '../assets/detailer.png'
+import microfiberImage from '../assets/microfiber.png'
 
 const products = [
-  { id: 1, name: "Artdeshine Nano Graphene Coating", price: "45.000 OMR", image: "/src/assets/graphine.png", category: "Coatings" },
-  { id: 2, name: "Artdeshine Graphene Detailer", price: "12.500 OMR", image: "/src/assets/detailer.png", category: "Maintenance" },
-  { id: 3, name: "Premium Microfiber Pack", price: "8.000 OMR", image: "/src/assets/microfiber.png", category: "Accessories" },
+  { id: 1, name: "Artdeshine Nano Graphene Coating", price: "45.000 OMR", image: graphineImage, category: "Coatings" },
+  { id: 2, name: "Artdeshine Graphene Detailer", price: "12.500 OMR", image: detailerImage, category: "Maintenance" },
+  { id: 3, name: "Premium Microfiber Pack", price: "8.000 OMR", image: microfiberImage, category: "Accessories" },
   { id: 4, name: "Wheel Cleaner Plus", price: "7.500 OMR", image: "...", category: "Cleaning" },
   { id: 5, name: "Iron Remover 500ml", price: "9.000 OMR", image: "...", category: "Cleaning" },
   { id: 6, name: "Artdeshine Ceramic Paste Wax", price: "25.000 OMR", image: "...", category: "Coatings" },
