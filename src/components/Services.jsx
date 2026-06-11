@@ -57,7 +57,7 @@ function Services() {
     {services.map((service, index) => (
       <div
         key={index}
-        className="group bg-brand-primary/10 border border-brand-primary/20 p-8 rounded-2xl hover:bg-brand-primary/20 transition-all hover:-translate-y-2"
+        className="group bg-brand-primary/20 border border-brand-primary/20 p-8 rounded-2xl hover:bg-brand-primary/20 transition-all hover:-translate-y-2"
       >
         {/* ICON */}
         <div className="relative w-12 h-12 mb-6">

@@ -1,4 +1,5 @@
-
+import { Lineicons } from "@lineiconshq/react-lineicons";
+import {  MapMarker1Outlined, Envelope1Outlined   } from "@lineiconshq/free-icons";
 
 function ContactUs() {
   return (
@@ -15,10 +16,8 @@ function ContactUs() {
         <div className="space-y-6">
           <div className="flex items-start gap-4">
             <div className="bg-brand-accent/10 p-3 rounded-lg text-brand-accent">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+    
+                <Lineicons icon={MapMarker1Outlined} size={20} color="currentColor" />
             </div>
             <div>
               <h4 className="font-bold">Our Location</h4>
@@ -27,9 +26,8 @@ function ContactUs() {
           </div>
           <div className="flex items-start gap-4">
             <div className="bg-brand-accent/10 p-3 rounded-lg text-brand-accent">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+       
+                    <Lineicons icon={Envelope1Outlined} size={20} color="currentColor" />
             </div>
             <div>
               <h4 className="font-bold">Email Us</h4>
@@ -39,8 +37,7 @@ function ContactUs() {
         </div>
       </div>
       
-      <form className="bg-brand-primary/5 p-8 md:p-12 rounded-3xl border border-brand-primary/10 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<form className="bg-brand-primary/20 p-8 md:p-12 rounded-3xl border border-brand-primary/20 space-y-6">        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-brand-white/50">Full Name</label>
             <input 
