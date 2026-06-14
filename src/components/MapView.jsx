@@ -1,8 +1,58 @@
+import React, { useRef, useEffect, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
-import mapImage from '../assets/world-physical-map.jpg'
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+
 function MapView() {
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    let timer = null;
+
+    if (!mapContainerRef.current) return;
+
+    timer = setTimeout(() => {
+      // Guard against multiple initializations
+      if (!isMounted || mapRef.current) return;
+
+      console.log("Map initializing...");
+      try {
+        mapRef.current = new mapboxgl.Map({
+          container: mapContainerRef.current,
+          style: 'mapbox://styles/mapbox/standard',
+          center: [58.4074, 23.5859],
+          zoom: 11
+        });
+
+        mapRef.current.on('load', () => {
+          if (isMounted) {
+            console.log("Map fully loaded!");
+            mapRef.current.resize();
+            setMapLoaded(true); // This triggers the overlay to hide
+          }
+        });
+      } catch (error) {
+        console.error("Mapbox error:", error);
+      }
+    }, 150);
+
+    return () => {
+      isMounted = false;
+      if (timer) clearTimeout(timer);
+      if (mapRef.current) {
+        const instance = mapRef.current;
+        mapRef.current = null;
+        instance.remove();
+      }
+    };
+  }, []);
+
   return (
-     <div className="space-y-12">
+    <div className="space-y-12">
       <div className="text-center space-y-4">
         <h2 className="text-brand-accent font-bold tracking-widest text-sm uppercase">Find Us</h2>
         <h3 className="text-3xl md:text-4xl font-bold">Partner Map Directory</h3>
@@ -11,28 +61,26 @@ function MapView() {
         </p>
       </div>
       
-      <div className="relative h-[500px] w-full bg-brand-primary/10 rounded-3xl border border-brand-primary/20 overflow-hidden flex items-center justify-center">
-        {/* Placeholder for Mapbox integration */}
-        <div className="absolute inset-0 opacity-40">
-           <img 
-            src={mapImage} 
-            alt="Map background" 
-            className="w-full h-full object-cover grayscale invert"
-          />
-        </div>
-        <div className="relative z-10 text-center space-y-4 bg-brand-darkslate/80 p-8 rounded-2xl backdrop-blur-sm border border-brand-white/10">
-         
-          <h4 className="text-xl font-bold">Interactive Map Component</h4>
-          <p className="text-sm text-brand-white/70 max-w-xs mx-auto">
-            (Mapbox integration in progress. Approved partners will be plotted here.)
-          </p>
-          <button className="bg-brand-accent text-brand-white px-6 py-2 rounded-full font-bold text-sm">
-            Detect My Location
-          </button>
-        </div>
+    <div className="relative h-[500px] w-full bg-brand-primary/10 rounded-3xl border border-brand-primary/20 overflow-hidden">
+        
+        {/* THE ACTUAL MAP */}
+        <div className="absolute inset-0 w-full h-full block" ref={mapContainerRef} />
+
+        {/* THE OVERLAY - This now disappears when mapLoaded is true */}
+        {!mapLoaded && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-brand-darkslate/90 backdrop-blur-md">
+            <h4 className="text-xl font-bold text-brand-white">Initializing Map...</h4>
+            <p className="text-sm text-brand-white/70 max-w-xs mx-auto">
+              Please wait while we load the interactive partner directory.
+            </p>
+            <div className="flex justify-center">
+               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand-accent"></div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  )
-
+  );
 }
+
 export default MapView;

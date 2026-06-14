@@ -27,7 +27,7 @@ function ContactUs() {
           <div className="flex items-start gap-4">
             <div className="bg-brand-accent/10 p-3 rounded-lg text-brand-accent">
        
-                    <Lineicons icon={Envelope1Outlined} size={20} color="currentColor" />
+                    <Lineicons icon={Envelope1Outlined} size={20} className="text-b" color="currentColor" />
             </div>
             <div>
               <h4 className="font-bold">Email Us</h4>
