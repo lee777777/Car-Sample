@@ -1,124 +1,25 @@
-import { useState, useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import { usePartnerSignupForm } from "../hooks/usePartnerSignupForm";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Configure your Mapbox access token
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-const initialForm = {
-  companyName: "",
-  ownerName: "",
-  email: "",
-  phone: "",
-  companyAddress: "",
-  crNumber: "",
-  latitude: 23.5859, // Default fallback (e.g., Muscat)
-  longitude: 58.4074,
-};
 
 const PartnerSignup = () => {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState(initialForm);
-  const [verificationDoc, setVerificationDoc] = useState(null);
+ // Pull all states, elements, and functions dynamically out of the hook
+  const {
+    step,
+    formData,
+    verificationDoc,
+    mapContainerRef,
+    isSubmitting,
+    nextStep,
+    prevStep,
+    handleChange,
+    handleFileChange,
+    handleAutoLocate,
+    handleSubmit,
+  } = usePartnerSignupForm();
 
-  // Mapbox Refs
-  const mapContainerRef = useRef(null);
-  const mapRef = useRef(null);
-  const markerRef = useRef(null);
 
-  const nextStep = () => setStep((s) => Math.min(s + 1, 3));
-  const prevStep = () => setStep((s) => Math.max(s - 1, 1));
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setVerificationDoc(e.target.files[0]);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Here you will handle your Phase 1 & Phase 2 Handshake token generation, 
-    // uploading the verificationDoc file to Supabase Storage, and posting formData text.
-    console.log("Submitting Text Metadata Payload:", formData);
-    console.log("Submitting Verification File Binary Asset:", verificationDoc);
-    
-    alert("Application submitted successfully!");
-    setFormData(initialForm);
-    setVerificationDoc(null);
-    setStep(1);
-  };
-
-  // Initialize Mapbox instance when entering Step 1
-  useEffect(() => {
-    if (step !== 1 || !mapContainerRef.current) return;
-
-    // Initialize Map Window Canvas
-    mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/standard",
-      center: [formData.longitude, formData.latitude],
-      zoom: 11,
-    });
-
-    // Instantiate Draggable Pin Marker Layer
-    markerRef.current = new mapboxgl.Marker({ draggable: true })
-      .setLngLat([formData.longitude, formData.latitude])
-      .addTo(mapRef.current);
-
-    // Capture explicit coordinates on dragging the marker pin
-    markerRef.current.on("dragend", () => {
-      const lngLat = markerRef.current.getLngLat();
-      setFormData((prev) => ({
-        ...prev,
-        latitude: lngLat.lat,
-        longitude: lngLat.lng,
-      }));
-    });
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, [step]);
-
-  // Request browser geolocation to snap the map layout automatically
-  const handleAutoLocate = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser framework.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setFormData((prev) => ({ ...prev, latitude, longitude }));
-
-        if (mapRef.current) {
-          mapRef.current.flyTo({
-            center: [longitude, latitude],
-            zoom: 14,
-            essential: true,
-          });
-        }
-        if (markerRef.current) {
-          markerRef.current.setLngLat([longitude, latitude]);
-        }
-      },
-      (error) => {
-        console.error("Geolocation request error context:", error);
-        alert("Unable to acquire your current location automatically. Drag the pin manually.");
-      },
-      { enableHighAccuracy: true }
-    );
-  };
 
   return (
     <div className="pt-10 pb-20 max-w-3xl mx-auto px-4 space-y-12">
@@ -167,8 +68,7 @@ const PartnerSignup = () => {
             <input
               name="companyName"
               placeholder="Company Name"
-              value={formData.companyName}
-              onChange={handleChange}
+             value={formData.companyName} onChange={handleChange}
               className="input w-full p-3 bg-brand-darkslate border border-white/10 rounded-xl"
               required
             />
@@ -311,12 +211,12 @@ const PartnerSignup = () => {
                 Back
               </button>
 
-              <button
-                type="submit"
-                className="flex-1 bg-brand-accent text-brand-darkslate font-bold py-3 rounded-xl transition-transform active:scale-95"
-              >
-                Submit Application
-              </button>
+     <button
+       type="submit"
+       disabled={isSubmitting}
+     className="flex-1 bg-brand-accent text-brand-darkslate font-bold py-3 rounded-xl transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+            {isSubmitting ? "Uploading & Saving..." : "Submit Application"}
+            </button>
             </div>
           </>
         )}
