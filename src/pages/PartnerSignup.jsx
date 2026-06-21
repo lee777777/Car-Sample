@@ -11,7 +11,10 @@ const PartnerSignup = () => {
     verificationDoc,
     mapContainerRef,
     isSubmitting,
-    nextStep,
+    fromErrors,
+    firstStepValidation,
+    secondStepValidation,
+    thirdStepValidation,
     prevStep,
     handleChange,
     handleFileChange,
@@ -60,11 +63,16 @@ const PartnerSignup = () => {
         onSubmit={handleSubmit}
         className="bg-brand-primary/5 p-8 rounded-3xl border border-white/10 space-y-6"
       >
+        {fromErrors && (
+          <div className="text-rose-500 bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-sm font-medium whitespace-pre-line">
+            {fromErrors}
+          </div>
+        )}
         {/* STEP 1: BUSINESS DETAILS & INTERACTIVE MAP VIEW */}
         {step === 1 && (
           <>
             <h2 className="text-2xl font-bold">Business Details</h2>
-
+            
             <input
               name="companyName"
               placeholder="Company Name"
@@ -116,7 +124,7 @@ const PartnerSignup = () => {
 
             <button
               type="button"
-              onClick={nextStep}
+              onClick={firstStepValidation}
               className="w-full bg-brand-accent text-brand-darkslate font-bold py-3 rounded-xl transition-transform active:scale-95"
             >
               Next
@@ -128,7 +136,7 @@ const PartnerSignup = () => {
         {step === 2 && (
           <>
             <h2 className="text-2xl font-bold">Contact Info</h2>
-
+            
             <input
               name="ownerName"
               placeholder="Owner Full Name"
@@ -169,7 +177,7 @@ const PartnerSignup = () => {
 
               <button
                 type="button"
-                onClick={nextStep}
+                onClick={secondStepValidation}
                 className="flex-1 bg-brand-accent text-brand-darkslate font-bold py-3 rounded-xl"
               >
                 Next
@@ -182,7 +190,7 @@ const PartnerSignup = () => {
         {step === 3 && (
           <>
             <h2 className="text-2xl font-bold">Upload Verification Documents</h2>
-
+              
             {/* CR FILE METADATA ASSET FILE PICKER */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-brand-white/80 block">

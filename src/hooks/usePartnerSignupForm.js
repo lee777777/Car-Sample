@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { useMutation } from "@tanstack/react-query";
 import mapboxgl from "mapbox-gl";
 import API from "../services/api";
@@ -16,27 +16,28 @@ const INITIAL_FORM = {
   longitude: 58.4074,
 };
 //form validation
-const validateFormData = (formData, verificationDoc) => {
-  const errors = [];
-  if (!formData.companyName?.trim()) errors.push("Company Name is required.");
-  if (!formData.crNumber?.trim()) errors.push("CR Number is required.");
-  if (!formData.companyAddress?.trim()) errors.push("Physical Address is required.");
-  if (!formData.ownerName?.trim()) errors.push("Owner Name is required.");
+// const validateFormData = (formData, verificationDoc) => {
+//   const errors = [];
+//   if (!formData.companyName?.trim()) errors.push("Company Name is required.");
+//   if (!formData.crNumber?.trim()) errors.push("CR Number is required.");
+//   if (!formData.companyAddress?.trim()) errors.push("Physical Address is required.");
+//   if (!formData.ownerName?.trim()) errors.push("Owner Name is required.");
   
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!formData.email || !emailRegex.test(formData.email)) {
-    errors.push("A valid email address is required.");
-  }
-  if (!formData.phone?.trim()) errors.push("Phone number is required.");
-  if (!verificationDoc) errors.push("You must upload a CR document.");
+//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   if (!formData.email || !emailRegex.test(formData.email)) {
+//     errors.push("A valid email address is required.");
+//   }
+//   if (!formData.phone?.trim()) errors.push("Phone number is required.");
+//   if (!verificationDoc) errors.push("You must upload a CR document.");
 
-  if (errors.length > 0) throw new Error(errors.join("\n"));
-};
+//   if (errors.length > 0) throw new Error(errors.join("\n"));
+// };
 //hook
 export const usePartnerSignupForm = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [verificationDoc, setVerificationDoc] = useState(null);
+  const [fromErrors, setFormErrors] = useState("");
 
   // Mapbox Canvas References
   const mapContainerRef = useRef(null);
@@ -45,9 +46,58 @@ export const usePartnerSignupForm = () => {
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 3)); //move from 1 to 3
   const prevStep = () => setStep((s) => Math.max(s - 1, 1)); //move backe once until step 1 only
-
+  const firstStepValidation = () =>{
+     const errors = [];
+     const CR_REGEX = /^\d{6,8}$/;
+     if (!formData.companyName?.trim()) errors.push("Company Name is required.");
+     if (!formData.crNumber?.trim()){ 
+      errors.push("CR Number is required.")}
+      else if (!CR_REGEX.test(formData.crNumber.trim())) {
+      errors.push("CR Number must be a valid numeric sequence (6 to 8 digits).");
+    }
+     if (!formData.companyAddress?.trim()) errors.push("Physical Address is required.");
+    if (errors.length > 0) {
+      setFormErrors(errors.join("\n"));
+      return false; // Blocks navigation
+    }
+    
+    setFormErrors("");
+    nextStep();
+    return true;
+  }
+  const secondStepValidation = () =>{
+     const errors = [];
+     const OMAN_PHONE_REGEX = /^(?:\+?968)?(?:9|7)\d{7}$/;
+    if (!formData.ownerName?.trim()) errors.push("Owner Name is required.");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!formData.email || !emailRegex.test(formData.email)) {
+    errors.push("A valid email address is required.");
+  }
+  if (!formData.phone?.trim()){
+     errors.push("Phone number is required.")}
+     else if (!OMAN_PHONE_REGEX.test(formData.phone.trim())) {
+      errors.push("Please enter a valid phone number.");
+    }
+  if (errors.length > 0) {
+      setFormErrors(errors.join("\n"));
+      return false; // Blocks navigation
+    }
+    
+    setFormErrors("");
+    nextStep();
+    return true;
+  }
+  const thirdStepValidation = () =>{
+     if (!verificationDoc) { 
+      setFormErrors("You must upload a CR document.");
+      return false; 
+     }
+    setFormErrors("");
+    return true;
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setFormErrors("");
     setFormData((prev) => ({ ...prev, [name]: value })); //this will add all form data of all types exept files
   };
 
@@ -106,7 +156,8 @@ export const usePartnerSignupForm = () => {
   // Chained Two-Phase API Transaction
   const submissionMutation = useMutation({
     mutationFn: async () => {
-      validateFormData(formData, verificationDoc);
+      // validateFormData(formData, verificationDoc);
+      if (!thirdStepValidation()) throw new Error("Verification checks incomplete.");
 
       // Phase 1 Handshake
     const handshakeResponse = await API.post("/applications/signed-url", {
@@ -149,11 +200,13 @@ export const usePartnerSignupForm = () => {
       const message = error.response?.data?.error || error.message;
       alert(`Submission Interrupted:\n${message}`);
     }
-  }); // <-- This was where your closing brace mistakenly was
+  }); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submissionMutation.mutate();
+  if (thirdStepValidation()) {
+      submissionMutation.mutate();
+    }
   };
 
   return {
@@ -162,7 +215,11 @@ export const usePartnerSignupForm = () => {
     verificationDoc,
     mapContainerRef,
     isSubmitting: submissionMutation.isPending,
-    nextStep,
+    fromErrors,
+    // nextStep,
+    firstStepValidation,
+    secondStepValidation,
+    thirdStepValidation,
     prevStep,
     handleChange,
     handleFileChange,
