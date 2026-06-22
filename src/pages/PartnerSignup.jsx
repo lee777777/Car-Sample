@@ -35,9 +35,9 @@ const PartnerSignup = () => {
       </div>
 
       {/* PROGRESS FLOW VISUAL LAYER */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center w-full">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center flex-1">
+          <div key={i} className={`flex items-center ${i < 3 ? "flex-1" : "flex-initial mr-1"}`}>
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 ${
                 step >= i
