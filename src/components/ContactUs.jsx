@@ -1,7 +1,16 @@
 import { Lineicons } from "@lineiconshq/react-lineicons";
 import {  MapMarker1Outlined, Envelope1Outlined   } from "@lineiconshq/free-icons";
+import { useContactUsForm } from "../hooks/useContactUsForm";
+const ContactUs = () => {
+const {
+    formData,
+    isSubmitting,
+    fromErrors,
+  
+    handleChange,
+    handleSubmit,
+  } = useContactUsForm();
 
-function ContactUs() {
   return (
      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
       <div className="space-y-8">
@@ -37,13 +46,22 @@ function ContactUs() {
         </div>
       </div>
       
-<form className="bg-brand-primary/20 p-8 md:p-12 rounded-3xl border border-brand-primary/20 space-y-6">        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<form   onSubmit={handleSubmit} 
+className="bg-brand-primary/20 p-8 md:p-12 rounded-3xl border border-brand-primary/20 space-y-6">  
+    {fromErrors && (
+          <div className="text-rose-500 bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-sm font-medium whitespace-pre-line">
+            {fromErrors}
+          </div>
+        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-brand-white/50">Full Name</label>
             <input 
               type="text" 
               className="w-full bg-brand-black/50 border border-brand-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors"
-              placeholder="John Doe"
+              placeholder="John Doe"  value={formData.name} onChange={handleChange}
+              name="name"
+
             />
           </div>
           <div className="space-y-2">
@@ -51,7 +69,8 @@ function ContactUs() {
             <input 
               type="email" 
               className="w-full bg-brand-black/50 border border-brand-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors"
-              placeholder="john@example.com"
+              placeholder="john@example.com"  value={formData.email} onChange={handleChange}
+              name="email"
             />
           </div>
         </div>
@@ -60,7 +79,8 @@ function ContactUs() {
           <input 
             type="text" 
             className="w-full bg-brand-black/50 border border-brand-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors"
-            placeholder="Service Inquiry"
+            placeholder="Service Inquiry"  value={formData.message} onChange={handleChange}
+            name="message"
           />
         </div>
         <div className="space-y-2">
@@ -71,9 +91,15 @@ function ContactUs() {
             placeholder="How can we help you?"
           ></textarea>
         </div>
-        <button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-white font-bold py-4 rounded-xl transition-all shadow-lg transform hover:scale-[1.02]">
+        {/* <button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-white font-bold py-4 rounded-xl transition-all shadow-lg transform hover:scale-[1.02]">
           Send Message
-        </button>
+        </button> */}
+             <button
+       type="submit"
+       disabled={isSubmitting}
+     className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-white font-bold py-4 rounded-xl transition-all shadow-lg transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed">
+            {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
       </form>
     </div>
   )
