@@ -6,6 +6,7 @@ const INITIAL_FORM = {
   name: "",
   email: "",
   message: "",
+  subject: "",
 };
 export const useContactUsForm = () => {
 
@@ -21,6 +22,7 @@ const formValidation = () =>{
       else if (!emailRegex.test(formData.email.trim())) {
       errors.push("Email Address must be a valid.");
     }
+    if (!formData.subject?.trim()) errors.push("Subject is required.");
     if (!formData.message?.trim()) errors.push("Message is required.");
    
     if (errors.length > 0) {
@@ -44,6 +46,7 @@ const formValidation = () =>{
       const dbPayload = {
         name: formData.name,
         email: formData.email,
+        subject: formData.subject,
         message: formData.message,
       
       };
@@ -55,6 +58,7 @@ const formValidation = () =>{
  onSuccess: () => {
       alert("Quiery submitted successfully!");
       setFormData(INITIAL_FORM);
+      setFormErrors("");
 
     },
     onError: (error) => {
@@ -67,6 +71,7 @@ const formValidation = () =>{
     e.preventDefault();
   if (formValidation()) {
       submissionMutation.mutate();
+    
     }
   };
   return {

@@ -79,8 +79,8 @@ className="bg-brand-primary/20 p-8 md:p-12 rounded-3xl border border-brand-prima
           <input 
             type="text" 
             className="w-full bg-brand-black/50 border border-brand-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors"
-            placeholder="Service Inquiry"  value={formData.message} onChange={handleChange}
-            name="message"
+            placeholder="Service Inquiry"  value={formData.subject} onChange={handleChange}
+            name="subject"
           />
         </div>
         <div className="space-y-2">
@@ -88,7 +88,8 @@ className="bg-brand-primary/20 p-8 md:p-12 rounded-3xl border border-brand-prima
           <textarea 
             rows="4" 
             className="w-full bg-brand-black/50 border border-brand-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-accent transition-colors"
-            placeholder="How can we help you?"
+            placeholder="How can we help you?"  value={formData.message} onChange={handleChange}
+            name="message"
           ></textarea>
         </div>
         {/* <button className="w-full bg-brand-accent hover:bg-brand-accent/90 text-brand-white font-bold py-4 rounded-xl transition-all shadow-lg transform hover:scale-[1.02]">
