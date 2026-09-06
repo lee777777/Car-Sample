@@ -168,7 +168,8 @@ export const usePartnerSignupForm = () => {
       const { signedUrl, publicUrl } = handshakeResponse.data;
 
       // Cloud Binary upload
-      const upload = await fetch(signedUrl, { method: "PUT", headers: { "Content-Type": verificationDoc.type }, body: verificationDoc });
+      const upload = await fetch(signedUrl, //location of file in file storage
+         { method: "PUT", headers: { "Content-Type": verificationDoc.type }, body: verificationDoc });
       if (!upload.ok) throw new Error("Cloud Storage upload failure.");
 
       // Phase 2 Database ledger transaction

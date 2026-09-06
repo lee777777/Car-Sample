@@ -4,7 +4,7 @@ import axios from "axios";
 const API = axios.create({
 baseURL: import.meta.env.DEV 
     ? "http://localhost:3000/api" 
-    : "https://car-care-backend-sage.vercel.app/api",
+    : "https://api-carecare.duckdns.org/api",
 });
 
 export default API;

@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import API from './API'; 
+import API from '../services/api';
 
 /**
  * Global Admin Query Options 

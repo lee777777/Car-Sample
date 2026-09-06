@@ -6,7 +6,7 @@ import App from './App.jsx'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Prevents aggressive, unintended background data fetching out of the box
+      // Prevents unintended background data fetching 
       refetchOnWindowFocus: false, 
     },
   },
