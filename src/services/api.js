@@ -5,6 +5,9 @@ const API = axios.create({
 baseURL: import.meta.env.DEV 
     ? "http://localhost:3000/api" 
     : "https://car-care-api.loca.lt/api",
+    headers: {
+    'bypass-tunnel-reminder': 'true',
+  },
 });
 
 export default API;
